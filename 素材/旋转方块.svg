@@ -1,0 +1,69 @@
+<svg width="437" height="132" viewBox="0 0 437 132" fill="none" xmlns="http://www.w3.org/2000/svg">
+<style>
+@keyframes kf_____transform_0 {
+  0% {
+    transform: translateY(12.426px) translate(30px, 30px) rotate(-6.283rad) translate(-30px, -30px);
+  }
+  100% {
+    transform: translateY(12.426px) translate(30px, 30px) rotate(-3.142rad) translate(-30px, -30px);
+  }
+}
+#___ {
+  transform-origin: 0 0;
+  animation: kf_____transform_0 2s linear infinite;
+}
+@keyframes kf_____2_transform_0 {
+  0% {
+    transform: translateX(134px) translate(0px, 42.426px) rotate(-6.283rad) translate(0px, -42.426px) rotate(0.785rad) scaleX(1) scaleY(1);
+  }
+  100% {
+    transform: translateX(134px) translate(0px, 42.426px) rotate(-3.142rad) translate(0px, -42.426px) rotate(0.785rad) scaleX(1) scaleY(1);
+  }
+}
+#____2 {
+  transform-origin: 0 0;
+  animation: kf_____2_transform_0 2s linear infinite;
+}
+@keyframes kf_____3_transform_0 {
+  0% {
+    transform: translateY(12.426px) translate(30px, 30px) rotate(-6.283rad) translate(-30px, -30px);
+  }
+  100% {
+    transform: translateY(12.426px) translate(30px, 30px) rotate(-3.142rad) translate(-30px, -30px);
+  }
+}
+#____3 {
+  transform-origin: 0 0;
+  animation: kf_____3_transform_0 2s linear infinite;
+}
+@keyframes kf_____4_transform_0 {
+  0% {
+    transform: translateX(134px) translate(0px, 42.426px) rotate(-6.283rad) translate(0px, -42.426px) rotate(0.785rad) scaleX(1) scaleY(1);
+  }
+  100% {
+    transform: translateX(134px) translate(0px, 42.426px) rotate(-3.142rad) translate(0px, -42.426px) rotate(0.785rad) scaleX(1) scaleY(1);
+  }
+}
+#____4 {
+  transform-origin: 0 0;
+  animation: kf_____4_transform_0 2s linear infinite;
+}
+</style>
+<g id="Frame_8" clip-path="url(#clip0_125_4141)">
+<g id="____________" transform="translate(27 19)">
+<g id="_____________2">
+<rect id="___" transform="translate(0 12.4263)" width="60" height="60" fill="#FFF896"/>
+<rect id="____2" transform="translate(134) rotate(45)" width="60" height="60" rx="12" fill="#FFE5A3"/>
+</g>
+<g id="_____________3" transform="translate(219)">
+<rect id="____3" transform="translate(0 12.4263)" width="60" height="60" fill="#FFF896"/>
+<rect id="____4" transform="translate(134) rotate(45)" width="60" height="60" rx="12" fill="#FFE5A3"/>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_125_4141">
+<rect width="437" height="132" fill="white"/>
+</clipPath>
+</defs>
+</svg>

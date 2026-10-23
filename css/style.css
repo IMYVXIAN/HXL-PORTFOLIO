@@ -1,0 +1,627 @@
+/* =================================================================
+   Portfolio · 毛玻璃弥散风格
+   设计稿：1280desktop 系列
+   字体：Changa One（标题）/ Archivo Narrow（数字·装饰）/ PingFang SC（中文）
+   ================================================================= */
+
+:root{
+  --blue:#2561C5;          /* 主蓝 */
+  --blue-deep:#1E4FA6;
+  --orange:#ED7D13;        /* 辅助橙（加深，与奶白底对比更强） */
+  --pink:#F29A9E;          /* More 按钮粉 */
+  --gray:#9BA0A8;          /* 灰色小字 */
+  --gray-light:#B9BCC2;
+  --ink:#111111;
+  --bg:#FBF9EE;            /* 奶白背景 */
+  --beige:#F6EEDB;         /* Feelings 米色 */
+  --yellow-soft:#FFF08F;
+  --title-font:"Changa One", Impact, "Arial Black", sans-serif;
+  --narrow-font:"Archivo Narrow", "Arial Narrow", sans-serif;
+  --cn-font:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:auto}
+body{
+  font-family:var(--cn-font);
+  background:#FBF9EE;
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+button{font-family:inherit}
+img{user-select:none}
+
+/* ---------- 视图切换 ---------- */
+/* 每个视图背景：顶部 #FBF9EE 渐变过渡到底部水果图底色 #FAFDF3 */
+.view{
+  display:none;min-height:100vh;position:relative;
+  background:linear-gradient(to bottom, #FBF9EE 0%, #FAFDF3 100%);
+}
+.view.active{display:block;animation:viewIn .55s cubic-bezier(.2,.7,.2,1)}
+@keyframes viewIn{
+  from{opacity:0;transform:translateY(26px)}
+  to{opacity:1;transform:none}
+}
+
+/* ---------- 顶部导航 ---------- */
+.topnav{
+  position:absolute;top:30px;left:64px;z-index:60;
+  display:flex;align-items:center;gap:13px;
+}
+.nav-btn{
+  font-family:var(--title-font);
+  font-size:22px;letter-spacing:1px;
+  padding:12px 38px;min-width:142px;text-align:center;
+  border:3px solid var(--blue);
+  border-radius:9px;
+  background:#fff;color:var(--blue);
+  cursor:pointer;
+  transition:all .25s ease;
+}
+.nav-btn.pill{border-radius:999px;background:var(--blue);color:#fff}
+/* 悬停：蓝色胶囊 → 白色圆角态（与当前页一致），只变形状与颜色，大小位置不变、无阴影 */
+.nav-btn.pill:hover{background:#fff;color:var(--blue);border-radius:9px}
+.nav-play{
+  margin-left:10px;background:none;border:none;cursor:pointer;
+  width:0;height:0;
+  border-left:22px solid var(--blue);
+  border-top:14px solid transparent;
+  border-bottom:14px solid transparent;
+  transition:transform .25s;
+}
+.nav-play:hover{transform:scale(1.25)}
+
+/* ---------- HERO 通用 ---------- */
+/* 动画.gif 原始尺寸 1280×918，height 设为 918 以完整显示 */
+.hero{position:relative;padding:170px 64px 0;height:918px}
+
+/* 版头背景：弥散色块动画 GIF（更换背景改此处） */
+.hero-blobs{
+  position:absolute;inset:0;pointer-events:none;
+  background:url("../素材/动画.gif") center top / cover no-repeat;
+}
+/* 渐变过渡层：把 gif 底色（米白）平滑过渡到页面背景 #FBF9EE */
+.hero-blobs::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:180px;
+  background:linear-gradient(to bottom, rgba(251,249,238,0) 0%, #FBF9EE 100%);
+}
+
+.hero-title{
+  position:relative;z-index:2;
+  font-family:var(--title-font);
+  color:var(--blue);
+  font-size:240px;line-height:.9;letter-spacing:0;
+}
+.hero-line{
+  /* 新素材（1248×404，笔触 L54-R1114，右侧留白134px）：右锚定+按留白补偿，
+     尾端在任何窗口宽度下都恰好贴视口最右侧；宽1174≈放大约17% */
+  position:absolute;top:105px;right:-126px;z-index:1;
+  width:1174px;pointer-events:none;
+}
+.hero-meta{
+  position:absolute;bottom:36px;left:64px;right:64px;z-index:2;
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:var(--narrow-font);color:var(--gray);
+}
+.meta-l{font-size:22px;letter-spacing:1px}
+.meta-r{font-size:19px}
+
+/* HOME hero：加高至 880，标题下移后 @2026 行位于更靠下位置（首屏内可见） */
+.hero-home{height:880px}
+
+/* HOME / WORK / ABOUT 三个主页大标题字号与位置保持一致（240） */
+
+/* 详情页 hero：与 home 版头同高，背景同为动画.gif */
+.hero-detail{height:918px}
+.hero-detail .hero-title{
+  font-size:98px;line-height:1.0;
+  color:#5FAFCC;
+}
+/* @2026 行与其他页面一致，贴 hero 底部左右分布 */
+.hero-detail .hero-meta{
+  position:absolute;bottom:36px;left:64px;right:64px;z-index:2;
+}
+
+/* ---------- 区块标题 ---------- */
+.sec-title{
+  font-family:var(--title-font);
+  font-size:60px;font-weight:400;color:var(--ink);
+}
+.sec-title.center{text-align:center}
+
+/* ============================================================
+   HOME - For Myself（1:1 对齐 Figma）
+   正文规范：PingFang SC Light 20px / 行高 40px / 字距 20%(0.2em)；
+            重点 PingFang SC Semibold(600)
+   ============================================================ */
+.myself{
+  display:grid;grid-template-columns:530px 1fr;
+  column-gap:110px;
+  padding:110px 64px 100px;
+  align-items:stretch;
+}
+.myself-photo{position:relative}
+/* 手写 Hi 图：照片左侧中部（素材 2834×891，宽幅按照片比例显示） */
+.myself-photo img.myself-hi{
+  position:absolute;top:44%;left:4%;
+  width:52%;height:auto;object-fit:contain;
+  border-radius:0;z-index:2;pointer-events:none;
+}
+.myself-photo img{
+  width:100%;height:100%;object-fit:cover;
+  display:block;border-radius:26px;
+  transition:transform .45s cubic-bezier(.2,.7,.2,1);
+}
+.myself-photo:hover img:not(.myself-hi){transform:scale(1.05)}
+.photo-rect{
+  position:absolute;top:36px;left:40px;
+  width:100px;height:58px;background:var(--blue);
+}
+.photo-rect2{left:155px;background:#fff}
+.myself-text{padding-top:0;display:flex;flex-direction:column}
+.myself-text .sec-title{text-align:right}
+.myself-text p{
+  max-width:430px;margin-top:34px;color:var(--gray);
+  font-size:20px;line-height:40px;letter-spacing:.2em;
+  font-weight:300;text-align:justify;
+}
+.myself-text p + p{margin-top:56px}
+.myself-text p strong{font-weight:600;color:#6b7078}
+.btn-more{
+  display:block;margin:auto 0 0 auto;
+  font-family:var(--title-font);font-size:34px;
+  color:var(--pink);background:transparent;
+  border:3px solid var(--pink);border-radius:999px;
+  padding:16px 68px;cursor:pointer;
+  transition:all .3s;
+}
+.btn-more:hover{background:var(--pink);color:#fff;transform:translateY(-2px)}
+
+/* ============================================================
+   HOME - For My Works
+   ============================================================ */
+.myworks{padding:30px 64px 100px;position:relative}
+.myworks .sec-title{font-size:72px}
+.myworks-body{display:flex;gap:110px;margin-top:60px}
+
+/* 分类列表 */
+.work-cats{width:300px;padding-top:24px}
+.cat{
+  display:flex;align-items:flex-start;gap:10px;
+  margin-bottom:38px;cursor:pointer;
+  transition:transform .25s;
+}
+.cat:hover{transform:translateX(10px)}
+.cat .dot{font-size:32px;line-height:1;color:var(--ink);font-weight:bold}
+.cat .en{display:block;font-family:var(--narrow-font);font-weight:700;font-size:26px;color:var(--ink)}
+.cat .zh{display:block;color:var(--orange);font-size:17px;margin-top:6px;margin-left:26px}
+
+/* 堆叠卡片轮播（放大并整体右移） */
+.work-card-wrap{position:relative;width:740px;margin-left:auto}
+/* 卡片框架（插图.png 1790×1341 透明底：堆叠纸+白卡+灰占位区+说明+圆点），阴影随异形轮廓 */
+.card-frame{
+  position:relative;z-index:3;width:100%;display:block;
+  filter:drop-shadow(0 22px 34px rgba(0,0,0,.14));
+}
+/* 轮播照片：精确覆盖框架内灰色占位区（插图.png 实测 L77 R1667 T75 B1013） */
+.card-photo{
+  position:absolute;z-index:4;left:4.30%;top:5.59%;width:88.83%;height:69.95%;
+  object-fit:cover;transition:opacity .4s;
+}
+/* 箭头放大两倍：以右下角（箭头尖端）为基准放大，尖端指向位置不变 */
+.card-arrow{position:absolute;top:-216px;right:-20px;z-index:5;width:500px}
+
+/* 圆点（按中心点定位，覆盖框架自带圆点；高亮橙与插图一致） */
+.card-dot{
+  position:absolute;bottom:15.59%;z-index:6;
+  width:2.5%;aspect-ratio:1;border-radius:50%;transform:translate(50%,50%);
+  background:#d9d9d9;border:none;padding:0;cursor:pointer;
+}
+.card-dot.on{background:#ffc56e}
+
+/* ============================================================
+   HOME - 5 图横条（位置下移）
+   ============================================================ */
+.strip{display:flex;height:190px;margin:80px 0 0}
+.strip img{
+  flex:1;width:0;min-width:0;object-fit:cover;
+  transition:flex-grow .45s cubic-bezier(.2,.7,.2,1),filter .3s;
+  cursor:pointer;
+}
+.strip img:hover{flex-grow:1.7;filter:brightness(1.05)}
+
+/* ALL Works 按钮 */
+.btn-all{
+  display:block;margin:62px auto;
+  font-family:var(--title-font);font-size:33px;letter-spacing:1px;
+  color:var(--orange);background:transparent;
+  border:5px solid var(--orange);border-radius:999px;
+  padding:15px 74px;cursor:pointer;
+  transition:all .3s;
+}
+.btn-all:hover{background:var(--orange);color:#fff;transform:scale(1.05)}
+
+/* ============================================================
+   HOME - For My Feelings
+   ============================================================ */
+.feelings{
+  background:var(--beige);
+  padding:72px 64px;
+  display:flex;align-items:center;gap:48px;
+}
+.feel-arrow{flex:none;width:320px;align-self:center}
+.feelings p{
+  flex:1;color:var(--gray);
+  font-size:20px;line-height:40px;letter-spacing:.2em;
+  font-weight:300;text-align:justify;
+}
+
+/* ============================================================
+   层级：正文内容压在底部弥散装饰之上
+   ============================================================ */
+.myself,.myworks,.strip,.btn-all,.feelings,
+.work-section,.other-banner,.pager,.arrows-down,.other-group,.more-tip,
+.detail-head,.detail-body,.profile,.contact-sec{
+  position:relative;z-index:1;
+}
+
+/* ============================================================
+   装饰区（home：弥散葡萄整图 + 藤蔓叶）
+   ============================================================ */
+.deco{position:relative;z-index:0}
+.deco-home{height:540px}
+/* 可替换：版面底部整图（1280 宽 1:1 铺满设计稿宽度，底部对齐）
+   葡萄整体下移，露出图片顶部 */
+.deco-grape{
+  position:absolute;left:50%;bottom:-414px;
+  transform:translateX(-50%);
+  width:1120px;max-width:100vw;
+}
+/* 叶子 GIF 放大，延伸至页面两端 */
+.deco-leaves{
+  position:absolute;left:50%;bottom:250px;
+  transform:translateX(-50%);
+  width:1280px;max-width:100vw;
+}
+/* 底部全画布导出图：顶部与两侧渐隐，融入页面渐变背景，避免硬边 */
+.deco-grape,.dl-blob,.da-pear{
+  -webkit-mask-image:linear-gradient(to top, #000 55%, transparent 96%);
+          mask-image:linear-gradient(to top, #000 55%, transparent 96%);
+}
+
+/* ============================================================
+   底部毛玻璃导航：透明磨砂（backdrop-filter，透出底部水果弥散图）
+   ============================================================ */
+/* 卡片底部即页面最底部，无额外间距 */
+.footer-holder{padding:0 64px 0;position:relative;z-index:10}
+.footer-glass{
+  background:rgba(255,255,255,.22);
+  backdrop-filter:blur(26px) saturate(150%);
+  -webkit-backdrop-filter:blur(26px) saturate(150%);
+  border:1px solid rgba(255,255,255,.55);
+  border-radius:44px;
+  /* 加高：底部留白增大，文字保持顶部对齐 → 文字在栏内上升 */
+  padding:56px 80px 130px;
+  display:flex;justify-content:space-evenly;align-items:flex-start;
+  box-shadow:0 12px 44px rgba(0,0,0,.06);
+}
+.footer-col h4{
+  font-family:var(--title-font);font-weight:400;
+  font-size:27px;margin-bottom:18px;text-align:center;
+}
+.footer-col a{
+  display:block;color:var(--gray);
+  font-size:17px;line-height:2.1;text-align:center;
+  cursor:pointer;text-decoration:none;
+  transition:color .2s,transform .2s;
+}
+.footer-col a:hover{color:var(--blue);transform:translateX(3px)}
+.footer-x{font-size:30px;color:#2b2b2b;line-height:1.4}
+
+/* ============================================================
+   WORK 总览
+   ============================================================ */
+.work-menu{position:absolute;top:150px;right:64px;width:360px;z-index:3}
+.work-menu .cat{margin-bottom:34px}
+.work-menu .cat .en{font-size:28px}
+.work-menu .cat .zh{font-size:18px;margin-top:8px}
+.work-menu .cat .dot{font-size:36px}
+
+.work-section{padding:72px 64px 36px;text-align:center}
+.desc-zh{color:var(--gray);font-size:13px;margin-top:16px}
+.desc-en{
+  color:var(--gray-light);
+  font-family:var(--narrow-font);
+  font-size:13px;margin:10px auto 0;
+  max-width:680px;line-height:1.7;
+}
+
+.cards-row{display:flex;flex-wrap:wrap;gap:24px;justify-content:center;margin-top:46px}
+/* 5 卡并排：收窄卡片宽度，保证一行放下（内容宽 1152 = 5卡 + 4×24 间距） */
+.cards-row.five .work-card-item{width:calc((100% - 96px)/5)}
+.work-card-item{width:270px;cursor:pointer}
+.work-card-item .work-card{width:100%}
+.work-card{
+  border-radius:4px;overflow:hidden;
+  height:352px;
+  transition:transform .4s,box-shadow .4s;
+}
+.work-card img,.work-card video{width:100%;height:100%;object-fit:cover;display:block}
+.work-card-item:hover .work-card{transform:translateY(-10px);box-shadow:0 26px 48px rgba(0,0,0,.18)}
+.w270{width:270px}
+/* 卡片下方居左标注：数字 Archivo Narrow / 中文 PingFang SC */
+.work-card-cap{
+  display:flex;align-items:baseline;gap:12px;
+  margin-top:18px;text-align:left;
+}
+.work-card-cap .num{
+  font-family:var(--narrow-font);font-weight:700;
+  font-size:24px;line-height:1;color:var(--ink);
+}
+.work-card-cap .cap-text{
+  font-family:var(--cn-font);font-weight:300;
+  font-size:15px;letter-spacing:1px;color:var(--gray);
+}
+
+/* Other 黄色横幅（使用素材 other标签.png，按图片自身比例完整显示） */
+.other-banner{
+  width:50%;
+  margin:46px auto 0;
+  border-radius:6px;overflow:hidden;cursor:pointer;
+  box-shadow:0 14px 34px rgba(255,196,66,.25);
+}
+.ob-img{width:100%;height:auto;display:block}
+.other-banner:hover .ob-img{filter:brightness(1.04)}
+
+/* 分页器：旋转方块 GIF（大小位置与原方/菱四形状一致，总宽246px）；
+   GIF 上覆盖四个透明热区，保留点击跳转 */
+.pager{display:flex;justify-content:center;margin:54px 0 0}
+.pager-box{position:relative;width:246px}
+.pager-box>img{width:100%;display:block;pointer-events:none}
+.pager-box .pg-hot{position:absolute;top:0;bottom:0;width:25%;cursor:pointer}
+.pager-box .pg-hot:nth-child(2){left:0}
+.pager-box .pg-hot:nth-child(3){left:25%}
+.pager-box .pg-hot:nth-child(4){left:50%}
+.pager-box .pg-hot:nth-child(5){left:75%}
+
+/* 底部装饰（work/详情页：弥散桃子整图 + 叶片动画） */
+.deco-leaf{position:relative;z-index:0;height:260px}
+/* 底图缩小，向下伸出装饰区（负值），底边与页面最底部对齐，上半部压在磨砂导航栏后面 */
+.dl-blob{
+  position:absolute;left:50%;bottom:-414px;
+  transform:translateX(-50%);
+  width:1120px;max-width:100vw;
+}
+.dl-leaf{
+  position:absolute;left:50%;bottom:110px;z-index:2;
+  transform:translateX(calc(-50% - 45px));
+  width:1330px;
+}
+
+/* ============================================================
+   作品详情页（Tab）
+   ============================================================ */
+.detail-menu{position:absolute;top:150px;right:64px;width:360px;z-index:3}
+.detail-menu .cat{margin-bottom:34px}
+.detail-menu .cat .en{font-size:28px}
+.detail-menu .cat .zh{font-size:18px;margin-top:8px}
+.detail-menu .cat .dot{font-size:36px}
+
+/* 切换键：文件夹式顶圆角标签（图3样式）
+   非激活=蓝底白字；激活=白底黑字，加宽加高、底边与白色标题条融合 */
+.work-tabs{display:flex;align-items:flex-end;gap:10px;padding:0 64px}
+.tab{
+  font-family:var(--narrow-font);font-weight:700;font-size:25px;
+  height:60px;min-width:110px;padding:0 26px;
+  background:var(--blue);color:#fff;
+  border:none;border-radius:14px 14px 0 0;
+  cursor:pointer;transition:all .3s;
+  display:flex;align-items:center;justify-content:center;
+}
+.tab.active{
+  background:#fff;color:var(--ink);
+  height:84px;min-width:210px;
+}
+.tab:not(.active):hover{background:var(--blue-deep)}
+
+.work-caption{
+  margin:0 64px;background:#fff;
+  border-radius:14px 14px 0 0;
+  padding:22px 32px;font-size:13px;color:#666;
+  box-shadow:0 -4px 22px rgba(0,0,0,.03);
+}
+.work-gallery{margin:0 64px 0}
+.work-gallery img,
+.work-gallery video{
+  width:100%;display:block;margin-bottom:0;border-radius:0;
+  animation:imgFade .5s ease;
+}
+.work-gallery video{background:#111;outline:none}
+/* PDF 作品：用浏览器内置阅读器内嵌整页 */
+.work-gallery iframe{
+  width:100%;height:1180px;display:block;margin-bottom:0;border:0;
+  background:#fff;animation:imgFade .5s ease;
+}
+@keyframes imgFade{from{opacity:0;transform:scale(.985)}to{opacity:1;transform:none}}
+
+/* ============================================================
+   WORK - Other 特殊布局
+   ============================================================ */
+.arrows-down{text-align:center;margin:46px 0 0}
+.arrows-down img{width:320px}
+
+.other-group{padding:0 64px;margin-top:20px}
+.other-num{
+  text-align:center;font-family:var(--narrow-font);font-weight:700;
+  font-size:72px;line-height:1.1;margin:120px 0 46px;color:var(--ink);
+}
+/* 灰色说明文字：与 Other 标题下说明文字一致（小字号、居中、Archivo Narrow） */
+.other-mini{
+  color:var(--gray-light);
+  font-family:var(--narrow-font);
+  font-size:16px;line-height:1.7;
+  max-width:680px;margin:10px auto 40px;text-align:center;
+}
+.other-grid{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+.other-grid.reverse{grid-template-columns:1fr 2fr}
+.other-grid img{width:100%;display:block}
+/* 4图：2×2 等比网格 */
+.other-grid.grid-4{grid-template-columns:1fr 1fr}
+.other-grid.grid-4 .ph{min-height:280px}
+/* 5图：左大图 + 右 2×2 子网格 */
+.ph-col-2x2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.ph-col-2x2 .ph{min-height:272px}
+.ph-col{display:flex;flex-direction:column;gap:16px}
+.ph{
+  flex:1;min-height:200px;background:#8A8A8A;
+  display:flex;align-items:center;justify-content:center;
+  color:rgba(255,255,255,.85);font-size:20px;letter-spacing:2px;
+}
+/* 大图占位：加高放大 */
+.og-ph{min-height:560px}
+/* 真实图版 左大+右2x2：左图2:1、右格正方形裁切，外轮廓对齐 */
+.other-grid .og-img{aspect-ratio:2/1;object-fit:cover}
+.ph-col-2x2 img{aspect-ratio:1/1;object-fit:cover}
+.ph.dark,.ph-col.dark .ph{background:#1A1A1A}
+/* 已落地作品：作品名 + 设计简介 + 全宽图流（全宽横图 / 2×2 海报混排） */
+.proj-title{
+  text-align:center;font-family:"Changa One",var(--cn-font);font-weight:400;
+  font-size:24px;letter-spacing:2px;color:var(--ink);
+  margin:0 auto 22px;
+}
+/* 设计简介：字号/间距与上方分类描述(.desc-zh/.desc-en)一致 */
+.proj-desc{
+  font-family:var(--cn-font);font-weight:300;
+  font-size:13px;line-height:1.7;color:var(--gray);
+  max-width:680px;margin:10px auto 46px;text-align:center;
+}
+.proj-desc strong{font-weight:600;color:var(--gray)}
+.proj-stack{display:flex;flex-direction:column;gap:16px}
+.proj-stack img,.proj-stack video{width:100%;display:block;border-radius:4px}
+.proj-stack video{background:#111}
+.proj-grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.proj-grid2 img{width:100%;display:block;border-radius:4px}
+.proj-grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.proj-grid3 img{width:100%;display:block;border-radius:4px}
+/* 尺寸不一的图：按统一比例裁切，保证网格外轮廓对齐 */
+.crop-32 img{aspect-ratio:3/2;object-fit:cover}
+.crop-75 img{aspect-ratio:7/5;object-fit:cover}
+.crop-45 img{aspect-ratio:4/5;object-fit:cover}
+.crop-916 img{aspect-ratio:9/16;object-fit:cover}
+/* 详情页手机长图三列网格（Product 04） */
+.work-gallery .g-phones{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.work-gallery .g-phones img{border-radius:4px;animation:imgFade .5s ease}
+
+/* 旋转方块 gif 分页装饰 */
+.pager-gif{gap:0}
+.pager-gif img{display:block;width:300px;max-width:80vw}
+.more-tip{
+  text-align:center;color:var(--gray-light);
+  font-size:22px;margin:44px auto 0;letter-spacing:6px;
+}
+
+/* ============================================================
+   ABOUT（1:1 对齐 Figma：左右两列顶/底对齐）
+   字体规范：正文 PingFang SC Light 20px / 行高 40px / 字距 1px；
+            重点 PingFang SC Semibold(600)
+   ============================================================ */
+.profile{
+  display:grid;grid-template-columns:1fr 430px;
+  gap:70px;padding:40px 64px 70px;align-items:stretch;
+}
+/* 左列三段：首段顶对齐、末段底对齐，中段按 Figma 间距靠下 */
+.profile-left{display:flex;flex-direction:column;justify-content:flex-start}
+.profile-left .reveal:nth-child(2){margin-top:70px}
+.profile-left .reveal:nth-child(3){margin-top:auto}
+.profile-left .reveal{max-width:470px}
+.profile-left .plabel{
+  display:inline-block;
+  font-family:var(--title-font);font-style:italic;
+  font-size:22px;color:var(--blue);
+  margin:0 0 18px;cursor:pointer;transition:transform .25s;
+}
+.profile-left .plabel:hover{transform:translateX(5px)}
+.dots{display:flex;gap:15px;margin-bottom:20px}
+.dots span{width:30px;height:30px;border-radius:50%;background:#D4D6DA}
+.profile-left p{
+  color:var(--gray);
+  font-size:20px;line-height:40px;letter-spacing:.2em;
+  font-weight:300;                    /* PingFang SC Light */
+}
+.profile-left p strong{font-weight:600;color:#6b7078}  /* Semibold 重点 */
+/* about-标签.png 361×103：按 Figma 三枚标签等比显示 */
+.about-tag{width:225px;margin-bottom:18px;display:block}
+
+/* 软件图标整图：按 Figma 两排图标整体宽度 */
+.skills-img{width:465px;max-width:100%;display:block}
+
+.profile-photos{position:relative}
+/* 三张照片由原 about-照片.png 整图按透明边界切分（原图 1093×3061），
+   三段纵向无缝拼合、左右偏移用百分比，复刻原整图布局；
+   替换某张照片时只改 HTML 中对应 src，不改样式 */
+.profile-photos img{display:block;height:auto}
+.profile-photos .pp-1{width:99.91%;margin-left:0}
+.profile-photos .pp-2{width:83.81%;margin-left:8.05%}
+.profile-photos .pp-3{width:99.91%;margin-left:0}
+/* about-箭头.png 914×241：从右上弯向左下指向第一张照片 */
+.profile-arrow{
+  position:absolute;top:-95px;right:-128px;
+  width:560px;pointer-events:none;
+}
+
+/* Contact */
+.contact-sec{position:relative;padding:80px 64px 120px}
+/* 波纹.png：作为二维码底部背景装饰，居中压在二维码下沿并向下延伸 */
+.ecg-wave{
+  position:absolute;left:50%;bottom:-380px;top:auto;z-index:0;
+  transform:translateX(-50%);
+  width:1280px;max-width:100vw;opacity:.4;pointer-events:none;
+}
+.contact-list{width:460px;max-width:100%;margin:64px auto 0}
+.contact-item{
+  display:flex;align-items:center;justify-content:flex-start;gap:22px;
+  margin-bottom:36px;
+  font-family:var(--narrow-font);font-size:24px;color:#555;
+}
+.cic{flex:none;width:38px;height:38px;object-fit:contain}
+
+.qr{
+  width:300px;margin:90px auto 0;
+  background:transparent;
+}
+.qr img{width:100%;display:block}
+
+/* about 底部装饰（弥散梨子整图 + 叶片动画） */
+.deco-about{height:400px}
+.da-pear{
+  position:absolute;left:50%;bottom:-414px;
+  transform:translateX(-50%);
+  width:1120px;max-width:100vw;
+}
+.da-leaf{position:absolute;left:50%;top:210px;z-index:2;transform:translateX(-58%);width:640px}
+
+/* ============================================================
+   滚动进入动画
+   ============================================================ */
+.reveal{opacity:0;transform:translateY(42px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+/* ============================================================
+   响应式：窄屏简单适配（以 1280 桌面稿为主）
+   ============================================================ */
+/* 设计稿基准宽 1280：仅在更窄屏幕缩放标题 */
+@media (max-width:1100px){
+  .hero-title{font-size:150px}
+  .hero-detail .hero-title{font-size:72px}
+  .hero-line{width:760px;top:110px;left:auto;right:-82px}
+  .work-card-wrap{width:560px}
+}
+@media (max-width:1000px){
+  .myself{grid-template-columns:1fr;gap:40px}
+  .myself-photo img{max-width:480px}
+  .myworks-body{flex-direction:column;gap:50px}
+  .profile{grid-template-columns:1fr}
+  .feelings{flex-direction:column;align-items:flex-start;gap:20px}
+  .cards-row{flex-wrap:wrap}
+}

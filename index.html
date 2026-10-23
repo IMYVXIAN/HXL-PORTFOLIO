@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio · Design & Beyond</title>
+
+<!-- 字体：Changa One（大标题）/ Archivo Narrow（数字·装饰）/ 苹方 PingFang SC（中文小字，系统字体） -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&family=Archivo+Narrow:ital,wght@0,400;0,500;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- ================================================================
+     页面说明（后续替换 / 增减删改指南）
+     1. 全站为单文件多视图结构，8 个 section 对应 8 个设计页面：
+        home · work · work-product · work-industrial · work-brand ·
+        work-motion · work-exploration · about
+     2. 所有图片均使用「素材」文件夹中的临时例图，替换时改 <img src> 即可。
+     3. 作品详情页的图片由 js/main.js 顶部的 DETAIL_DATA 配置，
+        新增/删除作品只改该数据（每组 = 一个 tab）。
+     4. 顶部导航与底部玻璃导航由 JS 统一注入（见 main.js 中 NAV_HTML / FOOTER_HTML），
+        改一处全站生效。
+================================================================= -->
+
+<div id="app">
+
+<!-- ################################################################
+     视图 1 / HOME 首页
+################################################################# -->
+<section class="view active" data-view="home">
+
+  <div class="chrome-topnav" data-active="home"></div>
+
+  <!-- HERO：PRO TFOLID 大标题 + 手绘线圈 GIF + 弥散色块 -->
+  <div class="hero hero-home">
+    <!-- 版头背景：弥散色块动画（可整体删除，CSS 中更换背景） -->
+    <div class="hero-blobs" aria-hidden="true"></div>
+    <!-- 可替换：手绘线条 GIF -->
+    <img class="hero-line" src="素材/首页线条.gif" alt="手绘线条">
+    <h1 class="hero-title reveal">POR<br>TFOLIO</h1>
+    <div class="hero-meta">
+      <span class="meta-l">@2026</span>
+      <span class="meta-r">Design &amp; Beyond</span>
+    </div>
+  </div>
+
+  <!-- FOR MYSELF：左照片 / 右简介 -->
+  <div class="myself" id="anchor-myself">
+    <!-- 可替换：首页个人照片（photo-rect 为照片左上装饰色块） -->
+    <div class="myself-photo reveal">
+      <img src="素材/home-照片.png" alt="个人照片">
+      <span class="photo-rect"></span>
+      <span class="photo-rect photo-rect2"></span>
+      <!-- 手写 Hi, I'm Huang Xinlan -->
+      <img class="myself-hi" src="素材/hi.png" alt="Hi, I'm Huang Xinlan">
+    </div>
+    <div class="myself-text reveal">
+      <h2 class="sec-title">For Myself</h2>
+      <p>我是黄欣镧，南京林业大学的工业设计本科专业，擅长以用户研究为核心，通过系统化的设计流程，将复杂的需求转化为简洁而有目的的解决方案，有坚实的产品设计理论基础和实践能力，出色的视觉表现力和交互逻辑思维。</p>
+      <p>在学习和工作中，始终保持着高度的责任心，注重细节，追求完美，确保每一个设计都能够达到最佳效果，我还热衷于通过不断地主动学习来提升自己，不仅关注设计领域的最新趋势，还注重跨学科的学习与探索，力求从多角度来丰富自己的设计能力，持续为团队和客户提供创新的设计解决方案。</p>
+      <!-- 跳转 About -->
+      <button class="btn-more" data-goto="about">More&gt;&gt;</button>
+    </div>
+  </div>
+
+  <!-- FOR MY WORKS：左分类列表 / 右堆叠卡片轮播 -->
+  <div class="myworks" id="anchor-works">
+    <h2 class="sec-title reveal">For My Works</h2>
+    <div class="myworks-body">
+      <!-- 分类列表（点击直达对应分类详情页） -->
+      <div class="work-cats reveal">
+        <div class="cat" data-goto="work-product">
+          <span class="dot">·</span>
+          <div><span class="en">Product &amp; UI/UX Design</span><span class="zh">产品设计</span></div>
+        </div>
+        <div class="cat" data-goto="work-industrial">
+          <span class="dot">·</span>
+          <div><span class="en">Industrial Design</span><span class="zh">工业设计</span></div>
+        </div>
+        <div class="cat" data-goto="work-brand">
+          <span class="dot">·</span>
+          <div><span class="en">Brand &amp; Visual Design</span><span class="zh">品牌与视觉设计</span></div>
+        </div>
+        <div class="cat" data-goto="work-motion">
+          <span class="dot">·</span>
+          <div><span class="en">3D &amp; Motion Design</span><span class="zh">三维与动效设计</span></div>
+        </div>
+        <div class="cat" data-goto="work-exploration">
+          <span class="dot">·</span>
+          <div><span class="en">Exploration</span><span class="zh">探索</span></div>
+        </div>
+      </div>
+
+      <!-- 卡片框架（插图.png 自带堆叠背景纸+白卡+灰占位区+说明+圆点），照片在占位区内轮播 -->
+      <div class="work-card-wrap reveal" id="homeCardCarousel">
+        <!-- 卡片框架（固定不动） -->
+        <img class="card-frame" src="素材/home-作品区例图/插图.png" alt="作品卡片">
+        <!-- 轮播照片：在框架灰色占位区内切换，共 4 张 -->
+        <img class="card-photo" id="homeCardImg" src="素材/home-作品区例图/展示产品.png" alt="作品图">
+        <!-- 蓝色手绘箭头（素材：home-箭头-蓝.png） -->
+        <img class="card-arrow" src="素材/home-箭头-蓝.png" alt="箭头">
+        <!-- 圆点（覆盖框架自带圆点，点击切换，橙色高亮跟随当前张；按中心点定位） -->
+        <button class="card-dot on" style="right:23.58%" data-slide="0" aria-label="第1张"></button>
+        <button class="card-dot" style="right:18.44%" data-slide="1" aria-label="第2张"></button>
+        <button class="card-dot" style="right:13.30%" data-slide="2" aria-label="第3张"></button>
+        <button class="card-dot" style="right:8.16%"  data-slide="3" aria-label="第4张"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 图横条（可替换：5 张作品缩略图，等宽排列，悬停放大） -->
+  <div class="strip reveal">
+    <img src="素材/work-总览区例图/03-1 (2).png" alt="作品1">
+    <img src="素材/work-作品详情例图/49 1.png"      alt="作品2">
+    <img src="素材/work-作品详情例图/52 1.png"      alt="作品3">
+    <img src="素材/work-总览区例图/03-1 (3).png"   alt="作品4">
+    <img src="素材/work-作品详情例图/54 1.png"      alt="作品5">
+  </div>
+
+  <!-- ALL WORKS 按钮 -->
+  <button class="btn-all reveal" data-goto="work">ALL Works&gt;&gt;</button>
+
+  <!-- FOR MY FEELINGS：米色背景区 -->
+  <div class="feelings" id="anchor-feelings">
+    <h2 class="sec-title reveal">For My Feelings</h2>
+    <img class="feel-arrow" src="素材/home-箭头-橙.png" alt="箭头">
+    <p class="reveal">每个作品都记录了我多年来对设计学习的一点一滴滴积累，其中最大的收获不是学会了多少软件，完成了几个项目，更重要的是，它教会了我耐心，教会我接受反复修改，更教会我过程往往比结果更重要，更能证明自己。设计从不能让你马上得到什么，但能让你走上得到的路。</p>
+  </div>
+
+  <!-- 底部装饰：紫色弥散球 + 绿色手绘藤蔓叶 GIF -->
+  <div class="deco deco-home">
+    <img class="deco-grape" src="素材/版面底部/home-底部.png" alt="装饰">
+  </div>
+
+  <div class="chrome-footer"></div>
+</section>
+
+
+<!-- ################################################################
+     视图 2 / WORK 作品总览
+################################################################# -->
+<section class="view" data-view="work">
+
+  <div class="chrome-topnav" data-active="work"></div>
+
+  <div class="hero hero-work">
+    <div class="hero-blobs" aria-hidden="true"></div>
+    <h1 class="hero-title reveal">WORK</h1>
+
+    <!-- 右上角分类菜单 -->
+    <div class="work-menu reveal">
+      <div class="cat" data-goto="work-product">
+        <span class="dot">·</span>
+        <div><span class="en">Product &amp; UI/UX Design</span><span class="zh">产品设计</span></div>
+      </div>
+      <div class="cat" data-goto="work-industrial">
+        <span class="dot">·</span>
+        <div><span class="en">Industrial Design</span><span class="zh">工业设计</span></div>
+      </div>
+      <div class="cat" data-goto="work-brand">
+        <span class="dot">·</span>
+        <div><span class="en">Brand &amp; Visual Design</span><span class="zh">品牌与视觉设计</span></div>
+      </div>
+      <div class="cat" data-goto="work-motion">
+        <span class="dot">·</span>
+        <div><span class="en">3D &amp; Motion Design</span><span class="zh">三维与动效设计</span></div>
+      </div>
+      <div class="cat" data-goto="work-exploration">
+        <span class="dot">·</span>
+        <div><span class="en">Exploration</span><span class="zh">探索</span></div>
+      </div>
+    </div>
+
+    <div class="hero-meta">
+      <span class="meta-l">@2026</span>
+      <span class="meta-r">All design</span>
+    </div>
+  </div>
+
+  <!-- Product & UI/UX Design -->
+  <div class="work-section">
+    <h2 class="sec-title reveal">Product &amp; UI/UX Design</h2>
+    <p class="desc-zh reveal">统筹产品功能体验与界面交互，让产品好用、好看、有效率。</p>
+    <p class="desc-en reveal">Planning product experience and interface interactions to make products usable, attractive and efficient.</p>
+    <div class="cards-row five reveal">
+      <div class="work-card-item" data-goto="work-product">
+        <div class="work-card w270"><img src="作品集/1.product&UIUX/01/预览图.png" alt="01"></div>
+        <p class="work-card-cap"><span class="num">01</span><span class="cap-text">C端界面设计——Pulse音乐社交APP</span></p>
+      </div>
+      <div class="work-card-item" data-goto="work-product" data-tab="02">
+        <div class="work-card w270"><img src="作品集/1.product&UIUX/02/预览图.png" alt="02"></div>
+        <p class="work-card-cap"><span class="num">02</span><span class="cap-text">创新服务设计——风车头村荷藕助农</span></p>
+      </div>
+      <div class="work-card-item" data-goto="work-product" data-tab="03">
+        <div class="work-card w270"><img src="作品集/1.product&UIUX/03/预览图.png" alt="03"></div>
+        <p class="work-card-cap"><span class="num">03</span><span class="cap-text">Vibe coding开发——拿下单词韩语学习APP</span></p>
+      </div>
+      <div class="work-card-item" data-goto="work-product" data-tab="04">
+        <div class="work-card w270"><img src="作品集/1.product&UIUX/04/预览图.png" alt="04"></div>
+        <p class="work-card-cap"><span class="num">04</span><span class="cap-text">B端界面设计——YOULING智能管理系统</span></p>
+      </div>
+      <div class="work-card-item" data-goto="work-product" data-tab="05">
+        <div class="work-card w270"><img src="作品集/1.product&UIUX/05/预览图.png" alt="05"></div>
+        <p class="work-card-cap"><span class="num">05</span><span class="cap-text">C端界面设计——写凡尘书法学习APP</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Industrial Design -->
+  <div class="work-section">
+    <h2 class="sec-title reveal">Industrial Design</h2>
+    <p class="desc-zh reveal">研究用户需求与使用场景，完成产品的功能、结构与外观设计。</p>
+    <p class="desc-en reveal">Researching user needs and scenarios to shape the function, structure and form of products.</p>
+    <!-- 3 张作品卡片，点击进入详情；卡片下方居左标注（数字 Archivo Narrow + 中文 PingFang SC） -->
+    <div class="cards-row reveal">
+      <div class="work-card-item" data-goto="work-industrial">
+        <div class="work-card w270"><img src="作品集/2.industraul/01/预览图.png" alt="01"></div>
+        <p class="work-card-cap"><span class="num">01</span><span class="cap-text">xxxxxxxxx设计</span></p>
+      </div>
+      <div class="work-card-item" data-goto="work-industrial" data-tab="02">
+        <div class="work-card w270"><img src="作品集/2.industraul/02/预览图.png" alt="02"></div>
+        <p class="work-card-cap"><span class="num">02</span><span class="cap-text">xxxxxxxxx设计</span></p>
+      </div>
+      <div class="work-card-item" data-goto="work-industrial" data-tab="03">
+        <div class="work-card w270"><img src="作品集/2.industraul/03/预览图.png" alt="03"></div>
+        <p class="work-card-cap"><span class="num">03</span><span class="cap-text">xxxxxxxxx设计</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Brand & Visual Design -->
+  <div class="work-section">
+    <h2 class="sec-title reveal">Brand &amp; Visual Design</h2>
+    <p class="desc-zh reveal">塑造品牌识别与视觉表达，用图形与色彩统一传递品牌理念。</p>
+    <p class="desc-en reveal">Building brand identity and visual expression to convey a unified concept through graphics and color.</p>
+    <div class="cards-row reveal">
+      <div class="work-card-item" data-goto="work-brand">
+        <div class="work-card w270"><img src="作品集/3.visual/01/3-01-预览图.png" alt="01"></div>
+        <p class="work-card-cap"><span class="num">01</span><span class="cap-text">粤上风味桌游品牌设计</span></p>
+      </div>
+      <div class="work-card-item" data-goto="work-brand" data-group="2">
+        <div class="work-card w270"><img src="作品集/3.visual/02/3-02-预览图.png" alt="02"></div>
+        <p class="work-card-cap"><span class="num">02</span><span class="cap-text">茉莉品牌设计</span></p>
+      </div>
+      <div class="work-card-item" data-goto="work-brand" data-group="3">
+        <div class="work-card w270"><img src="素材/work-总览区例图/04-1 (3).png" alt="03"></div>
+        <p class="work-card-cap"><span class="num">03</span><span class="cap-text">xxxxxxxxx设计</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3D & Motion Design -->
+  <div class="work-section">
+    <h2 class="sec-title reveal">3D &amp; Motion Design</h2>
+    <p class="desc-zh reveal">三维建模渲染与动态图形设计，赋予作品空间感与节奏感。</p>
+    <p class="desc-en reveal">3D modeling, rendering and motion graphics, giving works a sense of space and rhythm.</p>
+    <div class="cards-row reveal">
+      <div class="work-card-item" data-goto="work-motion">
+        <div class="work-card w270"><img src="作品集/4.3d&motion/01动态海报/1.gif" alt="01"></div>
+        <p class="work-card-cap"><span class="num">01</span><span class="cap-text">等春来动态海报</span></p>
+      </div>
+      <div class="work-card-item" data-goto="work-motion" data-group="2">
+        <div class="work-card w270"><img src="素材/work-总览区例图/03-1 (2).png" alt="02"></div>
+        <p class="work-card-cap"><span class="num">02</span><span class="cap-text">PULSE交互动效</span></p>
+      </div>
+      <div class="work-card-item" data-goto="work-motion" data-group="3">
+        <div class="work-card w270"><img src="素材/work-总览区例图/03-1 (3).png" alt="03"></div>
+        <p class="work-card-cap"><span class="num">03</span><span class="cap-text">xxxxxxxxx设计</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exploration 黄色横幅 -->
+  <div class="work-section" style="padding-bottom:0">
+    <h2 class="sec-title reveal">Exploration</h2>
+    <p class="desc-zh reveal">探索性作品的收集与展示。</p>
+    <p class="desc-en reveal">The collection and presentation of exploratory works are also included, offering a broader view of the creative range and references.</p>
+  </div>
+  <div class="other-banner reveal" data-goto="work-exploration">
+    <img class="ob-img" src="素材/other标签.png" alt="EXPLORATION">
+  </div>
+
+  <!-- 分页器：旋转方块 GIF（四个透明热区保留页面跳转） -->
+  <div class="pager reveal">
+    <div class="pager-box">
+      <img src="素材/旋转方块.gif" alt="分页导航">
+      <i class="pg-hot" data-goto="work" aria-label="作品总览"></i>
+      <i class="pg-hot" data-goto="work-exploration" aria-label="探索"></i>
+      <i class="pg-hot" data-goto="home" aria-label="首页"></i>
+      <i class="pg-hot" data-goto="about" aria-label="关于我"></i>
+    </div>
+  </div>
+
+  <!-- 底部装饰：单叶 + 粉色弥散块 -->
+  <div class="deco-leaf">
+    <img class="dl-blob" src="素材/版面底部/work-底部.png" alt="色块">
+  </div>
+
+  <div class="chrome-footer"></div>
+</section>
+
+
+<!-- ################################################################
+     视图 3 / WORK - INDUSTRIAL 工业设计详情（Tab 模板）
+################################################################# -->
+<section class="view" data-view="work-industrial">
+  <div class="chrome-topnav" data-active="work"></div>
+
+  <div class="hero hero-detail">
+    <div class="hero-blobs" aria-hidden="true"></div>
+    <h1 class="hero-title reveal">Industrial<br>-Design</h1>
+    <div class="detail-menu"></div>
+    <div class="hero-meta">
+      <span class="meta-l">@2026</span>
+      <span class="meta-r">industrial design</span>
+    </div>
+  </div>
+
+  <div class="detail-head work-section" style="padding-bottom:0">
+    <h2 class="sec-title reveal">Industrial Design</h2>
+    <p class="desc-zh reveal">研究用户需求与使用场景，完成产品的功能、结构与外观设计。</p>
+    <p class="desc-en reveal">Researching user needs and scenarios to shape the function, structure and form of products.</p>
+  </div>
+
+  <!-- Tabs + 作品标题条 + 作品图（由 JS 渲染） -->
+  <div class="detail-body" data-detail="industrial" style="margin-top:170px">
+    <div class="work-tabs"></div>
+    <div class="work-caption"></div>
+    <div class="work-gallery"></div>
+  </div>
+
+  <div class="deco-leaf">
+    <img class="dl-blob" src="素材/版面底部/work-底部.png" alt="色块">
+  </div>
+  <div class="chrome-footer"></div>
+</section>
+
+
+<!-- ################################################################
+     视图 4 / WORK - PRODUCT & UI/UX 产品设计详情（Tab 模板）
+################################################################# -->
+<section class="view" data-view="work-product">
+  <div class="chrome-topnav" data-active="work"></div>
+
+  <div class="hero hero-detail">
+    <div class="hero-blobs" aria-hidden="true"></div>
+    <h1 class="hero-title reveal">Product &amp;<br>UI/UX Design</h1>
+    <div class="detail-menu"></div>
+    <div class="hero-meta">
+      <span class="meta-l">@2026</span>
+      <span class="meta-r">product &amp; ui/ux design</span>
+    </div>
+  </div>
+
+  <div class="detail-head work-section" style="padding-bottom:0">
+    <h2 class="sec-title reveal">Product &amp; UI/UX Design</h2>
+    <p class="desc-zh reveal">统筹产品功能体验与界面交互，让产品好用、好看、有效率。</p>
+    <p class="desc-en reveal">Planning product experience and interface interactions to make products usable, attractive and efficient.</p>
+  </div>
+
+  <!-- Tabs + 作品标题条 + 作品图（由 JS 渲染） -->
+  <div class="detail-body" data-detail="product" style="margin-top:170px">
+    <div class="work-tabs"></div>
+    <div class="work-caption"></div>
+    <div class="work-gallery"></div>
+  </div>
+
+  <div class="deco-leaf">
+    <img class="dl-blob" src="素材/版面底部/work-底部.png" alt="色块">
+  </div>
+  <div class="chrome-footer"></div>
+</section>
+
+
+<!-- ################################################################
+     视图 5 / WORK - BRAND & VISUAL 品牌与视觉设计（分组布局，同 3D&Motion / Other）
+################################################################# -->
+<section class="view" data-view="work-brand">
+  <div class="chrome-topnav" data-active="work"></div>
+
+  <div class="hero hero-detail">
+    <div class="hero-blobs" aria-hidden="true"></div>
+    <h1 class="hero-title reveal">Brand &amp;<br>Visual Design</h1>
+    <div class="detail-menu"></div>
+    <div class="hero-meta">
+      <span class="meta-l">@2026</span>
+      <span class="meta-r">brand &amp; visual design</span>
+    </div>
+  </div>
+
+  <div class="detail-head work-section" style="padding-bottom:0">
+    <h2 class="sec-title reveal">Brand &amp; Visual Design</h2>
+    <p class="desc-zh reveal">塑造品牌识别与视觉表达，用图形与色彩统一传递品牌理念。</p>
+    <p class="desc-en reveal">Building brand identity and visual expression to convey a unified concept through graphics and color.</p>
+  </div>
+
+  <!-- 三个浅绿向下大箭头 -->
+  <div class="arrows-down reveal">
+    <img src="素材/箭头.png" alt="向下">
+  </div>
+
+  <!-- 作品组 1：粤上风味桌游品牌设计（排版按图1：全宽主视觉×2 → 四菜系海报2×2 → 实物/周边全宽×3） -->
+  <div class="other-group reveal">
+    <div class="other-num">-01-</div>
+    <h3 class="proj-title">粤上风味桌游品牌设计</h3>
+    <p class="proj-desc"><strong>设计简介：</strong>该设计是以广东地区粤菜四大菜系的发展线索，设计的以桌游文创为主体，形成品牌链条生态，让用户在娱乐过程中学习粤菜文化，了解粤菜知识，并推动当代粤菜文化的品牌建设和创新发展。</p>
+    <div class="proj-stack">
+      <!-- 品牌主视觉 -->
+      <img src="作品集/3.visual/01/3-01-1.png" alt="粤上风味品牌主视觉">
+      <!-- 品牌标识与设计简介 -->
+      <img src="作品集/3.visual/01/3-01-2.png" alt="粤上风味品牌标识与简介">
+      <!-- 四大菜系海报 2×2 -->
+      <div class="proj-grid2">
+        <img src="作品集/3.visual/01/3-01-3.png" alt="粤菜四大菜系海报一">
+        <img src="作品集/3.visual/01/3-01-4.png" alt="粤菜四大菜系海报二">
+        <img src="作品集/3.visual/01/3-01-5.png" alt="粤菜四大菜系海报三">
+        <img src="作品集/3.visual/01/3-01-6.png" alt="粤菜四大菜系海报四">
+      </div>
+      <!-- 桌游卡牌 -->
+      <img src="作品集/3.visual/01/3-01-7.png" alt="粤上风味桌游卡牌">
+      <!-- 棋盘套装 -->
+      <img src="作品集/3.visual/01/3-01-8.png" alt="粤上风味桌游棋盘套装">
+      <!-- 文创周边 -->
+      <img src="作品集/3.visual/01/3-01-9.png" alt="粤上风味文创周边">
+    </div>
+  </div>
+
+  <!-- 作品组 2：茉莉品牌设计（排版按标注图：全宽线稿标题 → 全宽色彩系统 → 三栏品牌应用 → 两栏图形元素 → 全宽实物 mockup） -->
+  <div class="other-group reveal">
+    <div class="other-num">-02-</div>
+    <h3 class="proj-title">茉莉品牌设计</h3>
+    <p class="proj-desc"><strong>设计简介：</strong>该设计以茉莉花为灵感，提取清新自然的色彩与线条元素，构建完整的品牌视觉识别系统，涵盖标志设计、色彩规范、图形元素及衍生品应用，传递自然清新的品牌调性。</p>
+    <div class="proj-stack">
+      <!-- 品牌线稿与标题 -->
+      <img src="作品集/3.visual/02/3-02- (1).png" alt="茉莉品牌线稿与标题">
+      <!-- 色彩系统 -->
+      <img src="作品集/3.visual/02/3-02- (2).png" alt="茉莉品牌色彩系统">
+      <!-- 品牌应用三栏 -->
+      <div class="proj-grid3">
+        <img src="作品集/3.visual/02/3-02- (5).png" alt="茉莉品牌应用一">
+        <img src="作品集/3.visual/02/3-02- (6).png" alt="茉莉品牌应用二">
+        <img src="作品集/3.visual/02/3-02- (8).png" alt="茉莉品牌应用三">
+      </div>
+      <!-- 横版图形元素两栏 -->
+      <div class="proj-grid2">
+        <img src="作品集/3.visual/02/3-02- (3).png" alt="茉莉图形元素一">
+        <img src="作品集/3.visual/02/3-02- (4).png" alt="茉莉图形元素二">
+      </div>
+      <!-- 实物 mockup -->
+      <img src="作品集/3.visual/02/3-02- (7).png" alt="茉莉品牌实物应用">
+    </div>
+  </div>
+
+  <!-- 作品组 3：5图 左大图 + 右 2×2 网格 -->
+  <div class="other-group reveal">
+    <div class="other-num">-03-</div>
+    <p class="other-mini">作品简介 / Brand identity and visual design works collection.</p>
+    <div class="other-grid">
+      <div class="ph og-ph dark">占位图 · 可替换</div>
+      <div class="ph-col-2x2">
+        <div class="ph dark">占位图 · 可替换</div>
+        <div class="ph dark">占位图 · 可替换</div>
+        <div class="ph dark">占位图 · 可替换</div>
+        <div class="ph dark">占位图 · 可替换</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 旋转方块动图 + 提示 -->
+  <div class="pager pager-gif reveal">
+    <img src="素材/旋转方块.gif" alt="更多作品">
+  </div>
+  <p class="more-tip reveal">更多作品请期待····</p>
+
+  <div class="deco-leaf">
+    <img class="dl-blob" src="素材/版面底部/work-底部.png" alt="色块">
+  </div>
+  <div class="chrome-footer"></div>
+</section>
+
+
+<!-- ################################################################
+     视图 6 / WORK - 3D & MOTION 三维与动效设计（Other 同款分组布局）
+################################################################# -->
+<section class="view" data-view="work-motion">
+  <div class="chrome-topnav" data-active="work"></div>
+
+  <div class="hero hero-detail">
+    <div class="hero-blobs" aria-hidden="true"></div>
+    <h1 class="hero-title reveal">3D &amp; Motion<br>-Design</h1>
+    <div class="detail-menu"></div>
+    <div class="hero-meta">
+      <span class="meta-l">@2026</span>
+      <span class="meta-r">3d &amp; motion design</span>
+    </div>
+  </div>
+
+  <div class="detail-head work-section" style="padding-bottom:0">
+    <h2 class="sec-title reveal">3D &amp; Motion Design</h2>
+    <p class="desc-zh reveal">三维建模渲染与动态图形设计，赋予作品空间感与节奏感。</p>
+    <p class="desc-en reveal">3D modeling, rendering and motion graphics, giving works a sense of space and rhythm.</p>
+  </div>
+
+  <!-- 三个浅绿向下大箭头 -->
+  <div class="arrows-down reveal">
+    <img src="素材/箭头.png" alt="向下">
+  </div>
+
+  <!-- 作品组 1：等春来动态海报（视频） -->
+  <div class="other-group reveal">
+    <div class="other-num">-01-</div>
+    <h3 class="proj-title">动态海报</h3>
+    <p class="proj-desc"><strong>设计简介：</strong>该设计以「等春来」为主题，运用图形动效与色彩节奏表现冬去春来的季节意境，通过元素的生长、流转与渐变赋予静态海报时间感与叙事性，探索动态图形在视觉传达中的情绪表达；另以「葡萄」为主题进行横版动态海报的延展探索，丰富系列的表达维度。</p>
+    <div class="proj-stack">
+      <div class="proj-grid2">
+        <img src="作品集/4.3d&motion/01动态海报/1.gif" alt="动态海报1" loading="lazy">
+        <img src="作品集/4.3d&motion/01动态海报/2.gif" alt="动态海报2" loading="lazy">
+      </div>
+      <img src="作品集/4.3d&motion/01动态海报/葡萄.gif" alt="葡萄动态海报" loading="lazy">
+    </div>
+  </div>
+
+  <!-- 作品组 2：PULSE 交互动效（视频） -->
+  <div class="other-group reveal">
+    <div class="other-num">-02-</div>
+    <h3 class="proj-title">PULSE 交互动效</h3>
+    <p class="proj-desc"><strong>设计简介：</strong>该组动效以「PULSE音乐社交APP」为核心，围绕运动节奏场景演绎界面转场与微交互，通过流畅的动态反馈呈现产品的律动感与社交氛围，强化「以运动节奏为主导的音乐社交」这一产品印象。</p>
+    <div class="proj-stack">
+      <video src="作品集/4.3d&motion/02交互动效/pluse交互动效.mp4" controls muted loop playsinline preload="metadata"></video>
+    </div>
+  </div>
+
+  <!-- 作品组 3：5图 左大图 + 右 2×2 网格 -->
+  <div class="other-group reveal">
+    <div class="other-num">-03-</div>
+    <p class="other-mini">作品简介 / 3D modeling, rendering and motion graphics works collection.</p>
+    <div class="other-grid">
+      <div class="ph og-ph dark">占位图 · 可替换</div>
+      <div class="ph-col-2x2">
+        <div class="ph dark">占位图 · 可替换</div>
+        <div class="ph dark">占位图 · 可替换</div>
+        <div class="ph dark">占位图 · 可替换</div>
+        <div class="ph dark">占位图 · 可替换</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 旋转方块动图 + 提示 -->
+  <div class="pager pager-gif reveal">
+    <img src="素材/旋转方块.gif" alt="更多作品">
+  </div>
+  <p class="more-tip reveal">更多作品请期待····</p>
+
+  <div class="deco-leaf">
+    <img class="dl-blob" src="素材/版面底部/work-底部.png" alt="色块">
+  </div>
+  <div class="chrome-footer"></div>
+</section>
+
+
+<!-- ################################################################
+     视图 7 / WORK - EXPLORATION 探索（特殊布局）
+################################################################# -->
+<section class="view" data-view="work-exploration">
+  <div class="chrome-topnav" data-active="work"></div>
+
+  <div class="hero hero-detail">
+    <div class="hero-blobs" aria-hidden="true"></div>
+    <h1 class="hero-title reveal">Exploration</h1>
+    <div class="detail-menu"></div>
+    <div class="hero-meta">
+      <span class="meta-l">@2026</span>
+      <span class="meta-r">product design</span>
+    </div>
+  </div>
+
+  <div class="detail-head work-section" style="padding-bottom:0">
+    <h2 class="sec-title reveal">Exploration</h2>
+    <p class="desc-zh reveal">探索性作品的收集与展示。</p>
+    <p class="desc-en reveal">The collection and presentation of exploratory works are also included, offering a broader view of the creative range and references.</p>
+  </div>
+
+  <!-- 三个浅绿向下大箭头 -->
+  <div class="arrows-down reveal">
+    <img src="素材/箭头.png" alt="向下">
+  </div>
+
+  <!-- 作品组 1：摄影探索（横图全宽/两栏裁切对齐，竖图 9:16 两栏） -->
+  <div class="other-group reveal">
+    <div class="other-num">-01-</div>
+    <h3 class="proj-title">摄影探索</h3>
+    <p class="proj-desc"><strong>设计简介：</strong>该系列是旅途中对风景、建筑与日常瞬间的影像记录，探索光影、构图与色彩在不同场景下的视觉表达，用镜头捕捉细微之处的情绪与氛围，作为设计创作的观察积累与灵感来源。</p>
+    <div class="proj-stack">
+      <img src="作品集/5.exploration/01.摄影探索/微信图片_20260924202113_108_9.jpg" alt="摄影探索">
+      <div class="proj-grid2 crop-32">
+        <img src="作品集/5.exploration/01.摄影探索/微信图片_20260924202112_107_9.jpg" alt="摄影探索">
+        <img src="作品集/5.exploration/01.摄影探索/微信图片_20260924202117_114_9.jpg" alt="摄影探索">
+      </div>
+      <div class="proj-grid2 crop-916">
+        <img src="作品集/5.exploration/01.摄影探索/微信图片_20260924202114_109_9.jpg" alt="摄影探索">
+        <img src="作品集/5.exploration/01.摄影探索/微信图片_20260924202116_112_9.jpg" alt="摄影探索">
+      </div>
+      <div class="proj-grid2 crop-916">
+        <img src="作品集/5.exploration/01.摄影探索/微信图片_20260924202116_113_9.jpg" alt="摄影探索">
+        <img src="作品集/5.exploration/01.摄影探索/微信图片_20260924202118_115_9.jpg" alt="摄影探索">
+      </div>
+    </div>
+  </div>
+
+  <!-- 作品组 2：手绘探索（横幅全宽 → 两栏 7:5 → 两栏 4:5） -->
+  <div class="other-group reveal">
+    <div class="other-num">-02-</div>
+    <h3 class="proj-title">手绘探索</h3>
+    <p class="proj-desc"><strong>设计简介：</strong>该系列以手绘为媒介，记录生活中的人物、场景与想象片段，通过线条、笔触与色彩的自由表达进行造型与画面构成的练习，在手绘过程中探索个人视觉语言，为后续的设计创作积累造型基础与创意素材。</p>
+    <div class="proj-stack">
+      <img src="作品集/5.exploration/02.手绘探索/1.png" alt="手绘探索">
+      <img src="作品集/5.exploration/02.手绘探索/2.jpg" alt="手绘探索">
+      <img src="作品集/5.exploration/02.手绘探索/3.jpg" alt="手绘探索">
+      <div class="proj-grid2 crop-75">
+        <img src="作品集/5.exploration/02.手绘探索/5.png" alt="手绘探索">
+        <img src="作品集/5.exploration/02.手绘探索/6.png" alt="手绘探索">
+      </div>
+    </div>
+  </div>
+
+  <!-- 作品组 3：5图 左大图 + 右 2×2 网格 -->
+  <div class="other-group reveal">
+    <div class="other-num">-03-</div>
+     <h3 class="proj-title">空间与环境探索</h3>
+    <p class="proj-desc"><strong>设计简介：</strong>该系列探讨对空间与环境的探索，关注设计在不同环境下的表现与功能，并通过视觉表达与功能实现，为设计创作提供新的灵感与参考。</p>
+    <div class="other-grid">
+      <img class="og-img" src="作品集/5.exploration/03.空间与环境探索/5-03-1(1).png" alt="空间与环境探索">
+      <div class="ph-col-2x2">
+        <img src="作品集/5.exploration/03.空间与环境探索/5-03-1 (2).png" alt="空间与环境探索">
+        <img src="作品集/5.exploration/03.空间与环境探索/5-03-1 (3).png" alt="空间与环境探索">
+        <img src="作品集/5.exploration/03.空间与环境探索/5-03-1 (4).png" alt="空间与环境探索">
+        <img src="作品集/5.exploration/03.空间与环境探索/5-03-1 (5).png" alt="空间与环境探索">
+      </div>
+    </div>
+  </div>
+
+  <!-- 旋转方块动图 + 提示 -->
+  <div class="pager pager-gif reveal">
+    <img src="素材/旋转方块.gif" alt="更多作品">
+  </div>
+  <p class="more-tip reveal">更多作品请期待····</p>
+
+  <div class="deco-leaf">
+    <img class="dl-blob" src="素材/版面底部/work-底部.png" alt="色块">
+  </div>
+  <div class="chrome-footer"></div>
+</section>
+
+
+<!-- ################################################################
+     视图 8 / ABOUT 关于
+################################################################# -->
+<section class="view" data-view="about">
+
+  <div class="chrome-topnav" data-active="about"></div>
+
+  <div class="hero hero-about">
+    <!-- 版头背景：弥散色块动画（可整体删除，CSS 中更换背景） -->
+    <div class="hero-blobs" aria-hidden="true"></div>
+    <h1 class="hero-title reveal">ABOUT</h1>
+    <div class="hero-meta">
+      <span class="meta-l">@2026</span>
+      <span class="meta-r">Something about me</span>
+    </div>
+  </div>
+
+  <!-- PERSONAL PROFILE -->
+  <h2 class="sec-title center reveal" style="margin-top:70px">Personal Profile</h2>
+
+  <div class="profile">
+    <!-- 左：文字信息 -->
+    <div class="profile-left">
+      <div class="reveal">
+        <span class="plabel">what's my name? →</span>
+        <div class="dots"><span></span><span></span><span></span></div>
+        <p>Hi，我是Huang Xinlan，毕业于南京林业大学<strong>工业设计专业</strong>，擅长以用户研究出发，通过系统化的设计流程，将复杂需求转化为简洁有目的的解决方案。具备扎实的产品设计理论基础与设计能力，并拥有良好的视觉表现力与交互逻辑思维。</p>
+      </div>
+
+      <div class="reveal">
+        <span class="plabel">Education experience →</span>
+        <img class="about-tag" src="素材/about-标签.png" alt="标签">
+        <p>在校期间，我主修了产品设计、交互设计、设计调研、创新服务设计、产品3D建模、品牌设计、视觉传达设计、人体工程学、文创产品设计等专业课程，并取得了优良的成绩；此外，还深入学习了学院特色课程如家具设计、木家具工艺等，充分体现了我的设计基础和综合能力。</p>
+      </div>
+
+      <div class="reveal">
+        <span class="plabel">Design skills →</span>
+        <!-- 可替换：软件技能图标整图 -->
+        <img class="skills-img" src="素材/软件.png" alt="设计软件图标">
+      </div>
+    </div>
+
+    <!-- 右：三张照片（可替换：斜放方图 / 圆形 / 斜放方图，分别替换下方三个 src 即可，
+         形状与位置由 CSS 中 .pp-1/.pp-2/.pp-3 控制） -->
+    <div class="profile-photos reveal">
+      <img class="pp-1" src="素材/about-照片1.png" alt="个人照片1">
+      <img class="pp-2" src="素材/about-照片2.png" alt="个人照片2">
+      <img class="pp-3" src="素材/about-照片3.png" alt="个人照片3">
+      <!-- 橙色弯箭头（素材：about-箭头.png） -->
+      <img class="profile-arrow" src="素材/about-箭头.png" alt="箭头">
+    </div>
+  </div>
+
+  <!-- 三个浅绿向下大箭头 -->
+  <div class="arrows-down reveal">
+    <img src="素材/箭头.png" alt="向下">
+  </div>
+
+  <!-- CONTACT INFORMATION -->
+  <div class="contact-sec">
+    <!-- 浅绿波纹折线装饰（素材：波纹.png，2x 透明图） -->
+    <img class="ecg-wave" src="素材/波纹.png" alt="">
+
+    <h2 class="sec-title center reveal">Contact information</h2>
+
+    <div class="contact-list reveal">
+      <!-- 可替换：联系方式文字 / 图标 -->
+      <div class="contact-item">
+        <img class="cic" src="素材/about电话 1.png" alt="电话">
+        <span>186 6346 3973</span>
+      </div>
+      <div class="contact-item">
+        <img class="cic" src="素材/about微信.png" alt="微信">
+        <span>186 6346 3973</span>
+      </div>
+      <div class="contact-item">
+        <img class="cic" src="素材/about电子邮件 1.png" alt="邮箱">
+        <span>twf22278@126.com</span>
+      </div>
+      <div class="contact-item">
+        <span class="cic" aria-hidden="true"></span>
+        <span>heldmyri@gmail.com</span>
+      </div>
+    </div>
+
+    <!-- 二维码：可替换 <img src> 为真实二维码图片 -->
+    <div class="qr reveal">
+      <img src="网页静态图片/vx二维码.png" alt="微信二维码">
+    </div>
+  </div>
+
+  <!-- 底部装饰：绿叶 + 绿色弥散块 -->
+  <div class="deco deco-about">
+    <img class="da-pear" src="素材/版面底部/about-底部.png" alt="绿色块">
+  </div>
+
+  <div class="chrome-footer"></div>
+</section>
+
+</div><!-- /#app -->
+
+<script src="js/main.js?v=20261013"></script>
+</body>
+</html>
